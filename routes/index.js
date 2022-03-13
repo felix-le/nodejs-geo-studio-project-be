@@ -8,5 +8,6 @@ router.get('/', function (req, res, next) {
     .json('Welcome to the Studio API. Lets begin');
 });
 
-router.use('/user', userRouter);
+router.use('/users', userRouter);
+
 module.exports = router;

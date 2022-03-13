@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { raiseException, responseServer } = require('../utils/response');
-const statusConstants = require('../constants/status.constant');
+const { statusConstants } = require('../constants/status.constant');
 const mockData = {
   id: 1,
   username: 'test',
@@ -14,8 +14,8 @@ const userCtrl = {
       return responseServer(
         res,
         statusConstants.SUCCESS_CODE,
-        'user',
-        mockData.user
+        'Get data successfully',
+        mockData
       );
     } catch (err) {
       console.log(err);
@@ -24,8 +24,9 @@ const userCtrl = {
 
   login: async (req, res) => {
     try {
-      const { data } = req.body;
-      if (!data.username || !data.password) {
+      const { username, password } = req.body;
+
+      if (!username || !password) {
         return raiseException(
           res,
           statusConstants.BAD_REQUEST_CODE,
@@ -33,12 +34,9 @@ const userCtrl = {
         );
       }
       // compare with mock data
-      if (
-        data.username === mockData.username &&
-        data.password === mockData.password
-      ) {
-        const accesstoken = createAccessToken({ id: user.id });
-        const refreshtoken = createRefreshToken({ id: user.id });
+      if (username === mockData.username && password === mockData.password) {
+        const accesstoken = createAccessToken({ id: username.id });
+        const refreshtoken = createRefreshToken({ id: username.id });
 
         res.cookie('refreshtoken', refreshtoken, {
           httpOnly: true,
@@ -46,7 +44,7 @@ const userCtrl = {
           sameSite: 'None',
           Secure: true,
         });
-        await interactCSV.backupFn();
+
         res.json({ accesstoken });
       } else {
         // wrong username or password

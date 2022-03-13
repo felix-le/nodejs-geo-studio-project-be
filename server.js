@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const logger = require('morgan'); // log request
 const cors = require('cors'); // Cross-Origin Resource Sharing
@@ -10,10 +11,10 @@ app.use(logger('dev')); //logger in dev mode, comment out in production
 app.use(express.json());
 
 // port default is 3000 or can create .env file to set port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.use('/', routes); // use routes
 
 app.listen(PORT, () => {
-  console.log('Server is running on port', 3000);
+  console.log('Server is running on port', 5000);
 });
